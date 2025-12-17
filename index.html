@@ -13,19 +13,19 @@
     </script>
 
     <style>
-        .tab-content { display: none; animation: fadeIn .5s }
-        .tab-content.active { display: block }
+        .tab-content { display: none; animation: fadeIn .5s ease-out; }
+        .tab-content.active { display: block; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px) }
-            to { opacity: 1; transform: translateY(0) }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes rush {
-            0% { transform: translateX(-120px) rotate(-5deg); opacity: 0 }
-            20% { opacity: 1 }
-            80% { transform: translateX(0) rotate(5deg) }
-            100% { transform: translateX(0) rotate(0) }
+            0% { transform: translateX(-120px) rotate(-5deg); opacity: 0; }
+            20% { opacity: 1; }
+            80% { transform: translateX(0) rotate(5deg); }
+            100% { transform: translateX(0) rotate(0); }
         }
 
         .animate-rush {
@@ -34,7 +34,7 @@
     </style>
 </head>
 
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition">
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300">
 
 <header class="bg-white dark:bg-slate-800 shadow sticky top-0 z-50">
     <div class="max-w-6xl mx-auto h-16 px-4 flex justify-between items-center">
@@ -49,138 +49,137 @@
                 <button id="btn-product" onclick="switchTab('product')" class="nav-btn px-3 py-2 rounded-md text-sm text-slate-500 dark:text-slate-400">쓱싹이 소개</button>
                 <button id="btn-advantages" onclick="switchTab('advantages')" class="nav-btn px-3 py-2 rounded-md text-sm text-slate-500 dark:text-slate-400">쓱싹이 장점</button>
                 <button id="btn-mechanism" onclick="switchTab('mechanism')" class="nav-btn px-3 py-2 rounded-md text-sm text-slate-500 dark:text-slate-400">작동 원리</button>
-                <button onclick="openQnA()" class="px-3 py-2 rounded-md text-sm text-slate-500 dark:text-slate-400">Q&A</button>
+                <button id="btn-qna" onclick="switchTab('qna')" class="nav-btn px-3 py-2 rounded-md text-sm text-slate-500 dark:text-slate-400">Q&A</button>
             </nav>
 
             <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
-                <i data-lucide="moon" id="dark-icon"></i>
+                <i id="dark-icon" data-lucide="moon"></i>
             </button>
         </div>
     </div>
 </header>
 
 <main class="max-w-6xl mx-auto px-4 py-10">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl min-h-[500px] overflow-hidden">
 
-<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl min-h-[600px]">
-
-<!-- 회사소개 -->
-<div id="company" class="tab-content active p-12 text-center">
-    <h2 class="text-3xl font-bold mb-4">We act like Fleming's Serendipity</h2>
-    <p class="text-slate-600 dark:text-slate-300">
-        사소한 발견에서 위대한 혁신을 만듭니다.
-    </p>
-</div>
-
-<!-- 제품 -->
-<div id="product" class="tab-content p-12 flex flex-col">
-    <div class="flex flex-col md:flex-row items-center mb-10">
-        <div class="md:w-1/2">
-            <h1 class="text-5xl font-extrabold mb-6">
-                부르면 오는<br>
-                스마트 쓰레기통<br>
-                <span class="text-blue-600">쓱싹이</span>
-            </h1>
-            <p class="text-lg text-slate-600 dark:text-slate-300">
-                박수만 치면 다가오는 반려 가전
-            </p>
+        <div id="company" class="tab-content active p-12 text-center">
+            <h2 class="text-3xl font-bold mb-4">We act like Fleming's Serendipity</h2>
+            <p class="text-slate-600 dark:text-slate-300">사소한 발견에서 위대한 혁신을 만듭니다.</p>
         </div>
 
-        <div class="md:w-1/2 h-80 bg-slate-100 dark:bg-slate-700 rounded-xl overflow-hidden">
-            <img src="https://i2.ruliweb.com/img/25/05/29/197176973d7e5da6.jpg" class="w-full h-full object-cover">
+        <div id="product" class="tab-content p-12">
+            <div class="flex flex-col md:flex-row items-center gap-10">
+                <div class="md:w-1/2">
+                    <h1 class="text-5xl font-extrabold mb-6 leading-tight">
+                        부르면 오는<br>스마트 쓰레기통<br>
+                        <span class="text-blue-600">쓱싹이</span>
+                    </h1>
+                    <p class="text-lg text-slate-600 dark:text-slate-300">박수만 치면 다가오는 반려 가전</p>
+                </div>
+                <div class="md:w-1/2 h-80 bg-slate-100 dark:bg-slate-700 rounded-xl overflow-hidden shadow-inner">
+                    <img src="https://i2.ruliweb.com/img/25/05/29/197176973d7e5da6.jpg" class="w-full h-full object-cover" alt="쓱싹이 이미지">
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-blue-50 dark:bg-slate-900 rounded-lg h-24 relative overflow-hidden flex items-center">
+                <div class="animate-rush absolute left-10 flex flex-col items-center">
+                    <i data-lucide="trash-2" class="w-12 h-12 text-blue-600"></i>
+                    <div class="w-10 h-2 bg-slate-300 rounded-full mt-1 blur-sm"></div>
+                </div>
+                <div class="w-full flex justify-end pr-10 opacity-30">
+                    <i data-lucide="user" class="w-10 h-10"></i>
+                </div>
+            </div>
         </div>
+
+        <div id="advantages" class="tab-content p-12 text-center">
+            <h2 class="text-3xl font-bold mb-8">왜 쓱싹이인가?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-6 border dark:border-slate-700 rounded-xl">
+                    <i data-lucide="hand" class="mx-auto mb-4 text-blue-500"></i>
+                    <h3 class="font-bold mb-2">박수 인식 이동</h3>
+                    <p class="text-sm opacity-70">어디서든 박수 두 번이면 당신 곁으로 이동합니다.</p>
+                </div>
+                <div class="p-6 border dark:border-slate-700 rounded-xl">
+                    <i data-lucide="sensor" class="mx-auto mb-4 text-blue-500"></i>
+                    <h3 class="font-bold mb-2">비접촉 자동 개폐</h3>
+                    <p class="text-sm opacity-70">근접 센서로 손대지 않고 위생적으로 버리세요.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="mechanism" class="tab-content p-12 text-center">
+            <h2 class="text-3xl font-bold mb-8">작동 원리</h2>
+            <div class="flex flex-wrap justify-center gap-4 items-center">
+                <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 rounded-full">박수 인식</span>
+                <i data-lucide="arrow-right"></i>
+                <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 rounded-full">자율 이동</span>
+                <i data-lucide="arrow-right"></i>
+                <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 rounded-full">근접 감지</span>
+                <i data-lucide="arrow-right"></i>
+                <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 rounded-full">자동 개폐</span>
+            </div>
+        </div>
+
+        <div id="qna" class="tab-content p-12">
+            <h2 class="text-3xl font-bold mb-8 text-center">자주 묻는 질문</h2>
+            <div class="max-w-2xl mx-auto space-y-4">
+                <details class="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg cursor-pointer">
+                    <summary class="font-bold">배터리는 얼마나 가나요?</summary>
+                    <p class="mt-2 opacity-80">완충 시 일반 가정 기준 약 3개월간 사용 가능합니다.</p>
+                </details>
+                <details class="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg cursor-pointer">
+                    <summary class="font-bold">음성 인식 기능이 있나요?</summary>
+                    <p class="mt-2 opacity-80">현재는 박수 소리에 반응하며, 음성 제어는 차기 모델 업데이트 예정입니다.</p>
+                </details>
+            </div>
+        </div>
+
     </div>
-
-    <div class="mt-auto bg-blue-50 dark:bg-slate-900 rounded-lg h-24 relative overflow-hidden flex items-center">
-        <div class="animate-rush absolute left-10 flex flex-col items-center">
-            <i data-lucide="trash-2" class="w-12 h-12 text-blue-600"></i>
-            <div class="w-10 h-2 bg-slate-300 rounded-full mt-1 blur-sm"></div>
-        </div>
-        <div class="w-full flex justify-end pr-10 opacity-30">
-            <i data-lucide="user" class="w-10 h-10"></i>
-        </div>
-    </div>
-</div>
-
-<!-- 장점 -->
-<div id="advantages" class="tab-content p-12 text-center">
-    <h2 class="text-3xl font-bold mb-8">왜 쓱싹이인가?</h2>
-    <p class="text-slate-600 dark:text-slate-300">
-        부르면 오고, 손대면 열립니다.
-    </p>
-</div>
-
-<!-- 원리 -->
-<div id="mechanism" class="tab-content p-12 text-center">
-    <h2 class="text-3xl font-bold mb-8">작동 원리</h2>
-    <p class="text-slate-600 dark:text-slate-300">
-        박수 인식 → 이동 → 근접 감지 → 자동 개폐
-    </p>
-</div>
-
-</div>
 </main>
 
-<footer class="bg-slate-900 text-slate-400 py-6 text-center">
-    © 2025 플레밍의 발톱 때
+<footer class="text-slate-500 py-10 text-center text-sm">
+    © 2025 플레밍의 발톱 때. All rights reserved.
 </footer>
 
 <script>
-lucide.createIcons();
-
-function switchTab(tab) {
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.getElementById(tab).classList.add('active');
-
-    document.querySelectorAll('.nav-btn').forEach(b => {
-        b.classList.remove('text-blue-600','bg-blue-50','dark:bg-slate-700');
-        b.classList.add('text-slate-500','dark:text-slate-400');
-    });
-
-    const btn = document.getElementById('btn-' + tab);
-    if(btn){
-        btn.classList.add('text-blue-600','bg-blue-50','dark:bg-slate-700');
-    }
-}
-
-function toggleDarkMode() {
-    const html = document.documentElement;
-    const icon = document.getElementById('dark-icon');
-
-    html.classList.toggle('dark');
-    icon.setAttribute('data-lucide', html.classList.contains('dark') ? 'sun' : 'moon');
+    // 초기 아이콘 생성
     lucide.createIcons();
-}
 
-function openQnA() {
-    const win = window.open('', '_blank');
-    win.document.write(`
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>쓱싹이 Q&A</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body class="bg-slate-50 dark:bg-slate-900 p-10">
-<h1 class="text-3xl font-bold mb-6">쓱싹이 Q&A</h1>
+    function switchTab(tabId) {
+        // 모든 탭 숨기기
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        
+        // 선택한 탭 보이기
+        const targetTab = document.getElementById(tabId);
+        if(targetTab) targetTab.classList.add('active');
 
-<details class="mb-4 bg-white dark:bg-slate-800 p-4 rounded">
-<summary class="font-bold cursor-pointer">배터리는 얼마나 가나요?</summary>
-<p class="mt-2 text-slate-600 dark:text-slate-300">약 3개월 사용 가능합니다.</p>
-</details>
+        // 모든 버튼 스타일 초기화
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.classList.remove('text-blue-600', 'bg-blue-50', 'dark:bg-slate-700', 'font-medium');
+            btn.classList.add('text-slate-500', 'dark:text-slate-400');
+        });
 
-<details class="mb-4 bg-white dark:bg-slate-800 p-4 rounded">
-<summary class="font-bold cursor-pointer">음성 인식도 되나요?</summary>
-<p class="mt-2 text-slate-600 dark:text-slate-300">추후 업데이트 예정입니다.</p>
-</details>
+        // 활성화된 버튼 스타일 적용
+        const activeBtn = document.getElementById('btn-' + tabId);
+        if(activeBtn) {
+            activeBtn.classList.add('text-blue-600', 'bg-blue-50', 'dark:bg-slate-700', 'font-medium');
+            activeBtn.classList.remove('text-slate-500', 'dark:text-slate-400');
+        }
+    }
 
-<script>lucide.createIcons()</script>
-</body>
-</html>
-`);
-    win.document.close();
-}
+    function toggleDarkMode() {
+        const isDark = document.documentElement.classList.toggle('dark');
+        const icon = document.getElementById('dark-icon');
+        
+        // 아이콘 교체 로직
+        icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+        
+        // 루사이드 아이콘 다시 그리기 (기존 아이콘 제거 후 생성)
+        lucide.createIcons();
+    }
 </script>
 
 </body>
