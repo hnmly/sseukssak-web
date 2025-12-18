@@ -6,157 +6,168 @@
   <title>플레밍의 발톱 때 - 쓱싹이</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- 애니메이션용 -->
   <style>
-    /* ===== 공통 애니메이션 ===== */
-    .tab-content { display:none; }
-    .tab-content.active {
-      display:block;
-      animation: pageIn 0.8s cubic-bezier(.22,1,.36,1);
+    /* ================= 애니메이션 컨셉 =================
+       RC카 / 로봇 느낌 : 바운스, 슬라이드, 회전, 네온
+    */
+
+    body {
+      background: radial-gradient(circle at top, #f8fafc, #e2e8f0);
     }
 
-    @keyframes pageIn {
-      from { opacity:0; transform: translateY(30px) scale(0.98); }
-      to   { opacity:1; transform: translateY(0) scale(1); }
+    .tab-content {
+      display: none;
+      animation: turboIn 0.6s cubic-bezier(.25,.8,.25,1);
+    }
+    .tab-content.active { display: block; }
+
+    @keyframes turboIn {
+      0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+      60% { opacity: 1; transform: translateY(-6px) scale(1.02); }
+      100% { transform: translateY(0) scale(1); }
     }
 
-    /* RC카 느낌: 살짝 튀는 모션 */
-    .rc-hover {
-      transition: transform .25s ease, box-shadow .25s ease;
+    /* 카드 호버 = RC카 점프 */
+    .card-hover {
+      transition: transform .3s, box-shadow .3s;
     }
-    .rc-hover:hover {
-      transform: translateY(-6px) rotate(-0.5deg);
+    .card-hover:hover {
+      transform: translateY(-8px) scale(1.03);
       box-shadow: 0 20px 40px rgba(0,0,0,.15);
     }
 
-    /* 좌우 슬라이드 */
-    .slide-in-left { animation: slideLeft .9s ease; }
-    .slide-in-right { animation: slideRight .9s ease; }
-
-    @keyframes slideLeft {
-      from { opacity:0; transform: translateX(-60px); }
-      to { opacity:1; transform: translateX(0); }
+    /* 버튼 네온 */
+    .neon-btn {
+      background: linear-gradient(135deg, #3b82f6, #22c55e);
+      color: white;
+      box-shadow: 0 0 0 rgba(59,130,246,.6);
+      transition: box-shadow .3s, transform .2s;
     }
-    @keyframes slideRight {
-      from { opacity:0; transform: translateX(60px); }
-      to { opacity:1; transform: translateX(0); }
+    .neon-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(59,130,246,.7);
     }
 
-    /* 버튼 클릭 리플 느낌 */
-    .press:active { transform: scale(0.97); }
+    /* 모달 */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      animation: fade .3s;
+    }
+    .modal.active { display: flex; }
+
+    @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col text-slate-800">
 
-<!-- ================= HEADER ================= -->
-<header class="sticky top-0 z-50 backdrop-blur bg-slate-900/70 border-b border-white/10">
-  <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-    <div onclick="switchTab('company')" class="flex items-center cursor-pointer">
-      <i data-lucide="rocket" class="text-blue-400 mr-2"></i>
-      <span class="font-extrabold tracking-tight text-lg">쓱싹이</span>
+<header class="bg-white shadow sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
+    <div class="flex items-center cursor-pointer" onclick="switchTab('company')">
+      <i data-lucide="car" class="text-blue-600 mr-2"></i>
+      <span class="font-bold text-xl">플레밍의 발톱 때</span>
     </div>
-    <nav class="hidden md:flex space-x-1">
-      <button id="btn-company" onclick="switchTab('company')" class="nav-btn px-3 py-2 rounded-md bg-blue-600 text-white">회사</button>
-      <button id="btn-product" onclick="switchTab('product')" class="nav-btn px-3 py-2 rounded-md">제품</button>
-      <button id="btn-advantages" onclick="switchTab('advantages')" class="nav-btn px-3 py-2 rounded-md">장점</button>
-      <button id="btn-mechanism" onclick="switchTab('mechanism')" class="nav-btn px-3 py-2 rounded-md">기술</button>
-      <button id="btn-qna" onclick="switchTab('qna')" class="nav-btn px-3 py-2 rounded-md">Q&A</button>
-      <button id="btn-login" onclick="switchTab('login')" class="nav-btn px-3 py-2 rounded-md">로그인</button>
-      <button id="btn-pay" onclick="switchTab('pay')" class="nav-btn px-3 py-2 rounded-md">결제</button>
+    <nav class="hidden md:flex gap-2">
+      <button onclick="switchTab('company')" id="btn-company" class="nav-btn px-3 py-2 rounded bg-blue-50 text-blue-600">회사 소개</button>
+      <button onclick="switchTab('product')" id="btn-product" class="nav-btn px-3 py-2 rounded">쓱싹이</button>
+      <button onclick="switchTab('advantages')" id="btn-advantages" class="nav-btn px-3 py-2 rounded">장점</button>
+      <button onclick="switchTab('mechanism')" id="btn-mechanism" class="nav-btn px-3 py-2 rounded">원리</button>
+      <button onclick="switchTab('qa')" id="btn-qa" class="nav-btn px-3 py-2 rounded">Q&A</button>
     </nav>
+    <div class="flex gap-2">
+      <button onclick="openModal('login')" class="text-sm">로그인</button>
+      <button onclick="openModal('pay')" class="neon-btn px-4 py-2 rounded text-sm">결제</button>
+    </div>
   </div>
 </header>
 
-<!-- ================= MAIN ================= -->
-<main class="flex-grow max-w-7xl mx-auto px-4 py-10 w-full">
+<main class="flex-grow max-w-6xl mx-auto px-4 py-10 w-full">
+  <div class="bg-white rounded-2xl shadow-xl p-8 min-h-[600px]">
 
-<!-- 회사 소개 -->
-<section id="company" class="tab-content active">
-  <div class="text-center mb-16 slide-in-left">
-    <h1 class="text-4xl md:text-5xl font-black mb-6">우리는 <span class="text-blue-400">RC처럼 움직이는 혁신</span>을 만듭니다</h1>
-    <p class="text-slate-300 max-w-2xl mx-auto">사소한 아이디어를 장난감처럼, 하지만 진지하게.</p>
+    <!-- 회사 -->
+    <div id="company" class="tab-content active text-center">
+      <h2 class="text-3xl font-bold mb-4">We act like Fleming's Serendipity</h2>
+      <p class="text-slate-600">사소한 발견에서 위대한 혁신을 만듭니다.</p>
+    </div>
+
+    <!-- 제품 -->
+    <div id="product" class="tab-content grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="text-5xl font-extrabold mb-6">RC카처럼 움직이는<br><span class="text-blue-600">쓱싹이</span></h1>
+        <p class="text-slate-600 mb-6">스마트폰으로 부르고 자동으로 열리는 똑똑한 쓰레기통</p>
+        <button class="neon-btn px-6 py-3 rounded">지금 체험</button>
+      </div>
+      <div class="relative">
+        <img src="https://i2.ruliweb.com/img/25/05/29/197176973d7e5da6.jpg" class="rounded-xl animate-bounce" />
+      </div>
+    </div>
+
+    <!-- 장점 -->
+    <div id="advantages" class="tab-content grid md:grid-cols-3 gap-6">
+      <div class="card-hover p-6 rounded-xl bg-slate-50 text-center">
+        <i data-lucide="joystick" class="mx-auto mb-4"></i>
+        <h3 class="font-bold">RC 조종</h3>
+      </div>
+      <div class="card-hover p-6 rounded-xl bg-slate-50 text-center">
+        <i data-lucide="hand" class="mx-auto mb-4"></i>
+        <h3 class="font-bold">자동 개폐</h3>
+      </div>
+      <div class="card-hover p-6 rounded-xl bg-slate-50 text-center">
+        <i data-lucide="smile" class="mx-auto mb-4"></i>
+        <h3 class="font-bold">재미있는 청소</h3>
+      </div>
+    </div>
+
+    <!-- 원리 -->
+    <div id="mechanism" class="tab-content space-y-6">
+      <div class="p-4 border rounded">① 앱 입력 → ② 모터 구동 → ③ 센서 감지</div>
+    </div>
+
+    <!-- Q&A -->
+    <div id="qa" class="tab-content space-y-4">
+      <details class="border p-4 rounded">
+        <summary class="font-bold cursor-pointer">실제로 움직이나요?</summary>
+        <p class="mt-2">네, RC카 기반으로 실제 주행합니다.</p>
+      </details>
+      <details class="border p-4 rounded">
+        <summary class="font-bold cursor-pointer">결제는 실제인가요?</summary>
+        <p class="mt-2">아니요, 시연용입니다.</p>
+      </details>
+    </div>
+
   </div>
-</section>
-
-<!-- 제품 -->
-<section id="product" class="tab-content">
-  <div class="grid md:grid-cols-2 gap-10 items-center">
-    <div class="slide-in-left">
-      <h2 class="text-5xl font-extrabold mb-6">RC카 쓰레기통<br><span class="text-blue-400">쓱싹이</span></h2>
-      <p class="text-slate-300 mb-8">앱으로 조종하고, 손만 대면 열리는 미래형 쓰레기통</p>
-      <button class="press px-6 py-3 bg-blue-600 rounded-xl font-bold">지금 체험하기</button>
-    </div>
-    <div class="rc-hover slide-in-right bg-slate-800 rounded-2xl p-6 flex justify-center">
-      <img src="https://i2.ruliweb.com/img/25/05/29/197176973d7e5da6.jpg" class="h-72 object-contain" />
-    </div>
-  </div>
-</section>
-
-<!-- 장점 -->
-<section id="advantages" class="tab-content">
-  <div class="grid md:grid-cols-3 gap-8">
-    <div class="rc-hover bg-slate-800 p-6 rounded-xl text-center">
-      <i data-lucide="gamepad-2" class="mx-auto mb-4 text-blue-400"></i>
-      <h3 class="font-bold text-xl">RC 조종</h3>
-      <p class="text-slate-400">장난감처럼 즐기는 청소</p>
-    </div>
-    <div class="rc-hover bg-slate-800 p-6 rounded-xl text-center">
-      <i data-lucide="hand" class="mx-auto mb-4 text-green-400"></i>
-      <h3 class="font-bold text-xl">비접촉</h3>
-      <p class="text-slate-400">손 안 대도 자동 개폐</p>
-    </div>
-    <div class="rc-hover bg-slate-800 p-6 rounded-xl text-center">
-      <i data-lucide="sparkles" class="mx-auto mb-4 text-yellow-400"></i>
-      <h3 class="font-bold text-xl">재미</h3>
-      <p class="text-slate-400">귀찮음이 놀이가 된다</p>
-    </div>
-  </div>
-</section>
-
-<!-- 기술 -->
-<section id="mechanism" class="tab-content">
-  <ol class="space-y-8 max-w-3xl mx-auto">
-    <li class="slide-in-left">📱 앱 → 명령 전송</li>
-    <li class="slide-in-right">⚙️ DC 모터 구동</li>
-    <li class="slide-in-left">📡 초음파 센서 → 자동 개폐</li>
-  </ol>
-</section>
-
-<!-- Q&A -->
-<section id="qna" class="tab-content max-w-3xl mx-auto">
-  <h2 class="text-3xl font-bold mb-6">Q & A</h2>
-  <details class="bg-slate-800 p-4 rounded mb-3">
-    <summary class="cursor-pointer">실제 구매 가능한가요?</summary>
-    <p class="mt-2 text-slate-300">현재는 시연용 프로토타입입니다.</p>
-  </details>
-  <details class="bg-slate-800 p-4 rounded">
-    <summary class="cursor-pointer">아두이노인가요?</summary>
-    <p class="mt-2 text-slate-300">네, 아두이노 기반입니다.</p>
-  </details>
-</section>
-
-<!-- 로그인 -->
-<section id="login" class="tab-content max-w-md mx-auto">
-  <h2 class="text-3xl font-bold mb-6">로그인</h2>
-  <input placeholder="아이디" class="w-full mb-3 p-3 rounded bg-slate-800" />
-  <input type="password" placeholder="비밀번호" class="w-full mb-4 p-3 rounded bg-slate-800" />
-  <button onclick="alert('로그인 성공 (모의)')" class="press w-full bg-blue-600 py-3 rounded-xl">로그인</button>
-</section>
-
-<!-- 결제 -->
-<section id="pay" class="tab-content max-w-md mx-auto">
-  <h2 class="text-3xl font-bold mb-6">결제 (모의)</h2>
-  <input placeholder="이름" class="w-full mb-3 p-3 rounded bg-slate-800" />
-  <input placeholder="주소" class="w-full mb-3 p-3 rounded bg-slate-800" />
-  <input placeholder="카드 번호 (가상)" class="w-full mb-4 p-3 rounded bg-slate-800" />
-  <button onclick="alert('결제가 완료되었습니다!')" class="press w-full bg-green-600 py-3 rounded-xl">결제하기</button>
-</section>
-
 </main>
 
-<footer class="text-center text-slate-500 py-6 text-sm">© 2025 플레밍의 발톱 때</footer>
+<footer class="bg-slate-900 text-slate-400 text-center py-6">
+  © 2025 플레밍의 발톱 때
+</footer>
+
+<!-- 로그인 모달 -->
+<div id="login" class="modal">
+  <div class="bg-white p-6 rounded-xl w-80">
+    <h3 class="font-bold mb-4">로그인</h3>
+    <input class="border w-full p-2 mb-3" placeholder="아이디" />
+    <input class="border w-full p-2 mb-4" placeholder="비밀번호" />
+    <button onclick="closeModal('login')" class="neon-btn w-full py-2 rounded">로그인</button>
+  </div>
+</div>
+
+<!-- 결제 모달 -->
+<div id="pay" class="modal">
+  <div class="bg-white p-6 rounded-xl w-96">
+    <h3 class="font-bold mb-4">결제</h3>
+    <input class="border w-full p-2 mb-2" placeholder="이름" />
+    <input class="border w-full p-2 mb-2" placeholder="주소" />
+    <input class="border w-full p-2 mb-4" placeholder="카드 번호 (가상)" />
+    <button onclick="alert('결제가 완료되었습니다!')" class="neon-btn w-full py-2 rounded">결제하기</button>
+  </div>
+</div>
 
 <script>
   lucide.createIcons();
@@ -165,10 +176,13 @@
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.getElementById(tab).classList.add('active');
 
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('bg-blue-600','text-white'));
-    const btn = document.getElementById('btn-' + tab);
-    if(btn) btn.classList.add('bg-blue-600','text-white');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('bg-blue-50','text-blue-600'));
+    const btn = document.getElementById('btn-'+tab);
+    if(btn) btn.classList.add('bg-blue-50','text-blue-600');
   }
+
+  function openModal(id){ document.getElementById(id).classList.add('active'); }
+  function closeModal(id){ document.getElementById(id).classList.remove('active'); }
 </script>
 
 </body>
