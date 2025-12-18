@@ -55,6 +55,19 @@
     .modal.show .modal-content {
       transform: scale(1);
     }
+
+    /* 드롭다운 메뉴 스타일 */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        z-index: 50;
+    }
+    .dropdown-menu.show {
+        display: block;
+        animation: fadeInUp 0.2s ease-out;
+    }
   </style>
 </head>
 
@@ -63,7 +76,7 @@
   <header class="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-40 transition-colors duration-300">
     <div class="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
       <div class="flex items-center cursor-pointer group" onclick="switchTab('company')">
-        <i data-lucide="sparkles" class="text-blue-600 dark:text-blue-400 mr-2 group-hover:rotate-12 transition-transform"></i>
+        <img src="https://lh3.googleusercontent.com/gg-dl/ABS2GSmn3TrbQefpGXg2Um5i4DwhnyS7lelFiahJoveADNi6YUbfUoEBolI-fMQeM3gkNfR6d1xjEOArTF5Ww4_J84iiQlcz6yk5GoLlYgIvTv3VRxn0GzE-d_SybEZxxyK3iKJI2kWmEkHOCMEeseWrWu8mdxeTSd5P5gJwt2ZQKfJYkjmKMg=s1024-rj" alt="Logo" class="w-8 h-8 rounded-full mr-2 group-hover:rotate-12 transition-transform shadow-sm">
         <span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">플레밍의 발톱 때</span>
       </div>
 
@@ -84,6 +97,10 @@
           class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition duration-200">
           작동 원리
         </button>
+        <button onclick="switchTab('qna')" id="btn-qna"
+          class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+          Q&A
+        </button>
 
         <div class="h-6 w-px bg-slate-300 dark:bg-slate-600 mx-2"></div>
 
@@ -91,7 +108,7 @@
           <i id="theme-icon" data-lucide="moon" class="w-5 h-5 text-slate-600 dark:text-yellow-400"></i>
         </button>
 
-        <div id="auth-area" class="ml-2">
+        <div id="auth-area" class="ml-2 relative">
           <button onclick="openModal('login-modal')" 
             class="px-4 py-2 bg-slate-800 dark:bg-slate-700 text-white text-sm rounded-lg hover:bg-slate-700 dark:hover:bg-slate-600 transition shadow-md hover:shadow-lg">
             로그인
@@ -186,7 +203,7 @@
               손을 대지 않아도 문이 열리는 마법을 경험하세요.
             </p>
             
-            <button onclick="openModal('payment-modal')" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-blue-500/30 transform transition hover:scale-105 hover:-translate-y-1 flex items-center">
+            <button onclick="handleBuyClick()" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-blue-500/30 transform transition hover:scale-105 hover:-translate-y-1 flex items-center">
               지금 만나러 가기
               <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
             </button>
@@ -236,7 +253,6 @@
       <div id="mechanism" class="tab-content p-8 md:p-12">
         <h2 class="text-3xl font-bold text-center mb-12 dark:text-white">작동 원리 (Technology)</h2>
         <div class="space-y-8 max-w-3xl mx-auto">
-
           <div class="flex items-start group">
             <div class="flex-shrink-0 bg-blue-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg mr-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-blue-500 to-blue-700">01</div>
             <div>
@@ -246,9 +262,7 @@
               </p>
             </div>
           </div>
-
           <div class="h-8 border-l-2 border-dashed border-slate-300 dark:border-slate-600 ml-8"></div>
-
           <div class="flex items-start group">
             <div class="flex-shrink-0 bg-blue-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg mr-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-blue-500 to-blue-700">02</div>
             <div>
@@ -258,9 +272,7 @@
               </p>
             </div>
           </div>
-
           <div class="h-8 border-l-2 border-dashed border-slate-300 dark:border-slate-600 ml-8"></div>
-
           <div class="flex items-start group">
             <div class="flex-shrink-0 bg-blue-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg mr-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-blue-500 to-blue-700">03</div>
             <div>
@@ -269,6 +281,39 @@
                 초음파 센서가 15cm 이내의 물체(손)를 감지하면 서보 모터를 제어하여 뚜껑을 엽니다.
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="qna" class="tab-content p-8 md:p-12">
+        <h2 class="text-3xl font-bold text-center mb-12 dark:text-white">자주 묻는 질문 (Q&A)</h2>
+        <div class="space-y-6 max-w-3xl mx-auto">
+          
+          <div class="bg-slate-50 dark:bg-slate-700 rounded-xl p-6 border border-slate-100 dark:border-slate-600 shadow-sm hover:shadow-md transition">
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2 flex items-center">
+              <span class="text-blue-600 mr-2">Q.</span> 배터리는 얼마나 지속되나요?
+            </h3>
+            <p class="text-slate-600 dark:text-slate-300 pl-6">
+              A. 완충 시 약 7일간 사용 가능하며, USB-C 타입 케이블로 간편하게 충전할 수 있습니다.
+            </p>
+          </div>
+
+          <div class="bg-slate-50 dark:bg-slate-700 rounded-xl p-6 border border-slate-100 dark:border-slate-600 shadow-sm hover:shadow-md transition">
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2 flex items-center">
+              <span class="text-blue-600 mr-2">Q.</span> 앱은 안드로이드와 아이폰 모두 지원하나요?
+            </h3>
+            <p class="text-slate-600 dark:text-slate-300 pl-6">
+              A. 네, 현재 구글 플레이스토어와 애플 앱스토어에서 모두 다운로드 가능합니다.
+            </p>
+          </div>
+
+          <div class="bg-slate-50 dark:bg-slate-700 rounded-xl p-6 border border-slate-100 dark:border-slate-600 shadow-sm hover:shadow-md transition">
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2 flex items-center">
+              <span class="text-blue-600 mr-2">Q.</span> A/S 기간은 어떻게 되나요?
+            </h3>
+            <p class="text-slate-600 dark:text-slate-300 pl-6">
+              A. 구매일로부터 1년간 무상 A/S를 지원합니다. 고객 과실에 의한 파손은 유상 처리될 수 있습니다.
+            </p>
           </div>
 
         </div>
@@ -341,8 +386,32 @@
     </div>
   </div>
 
+  <div id="inquiry-modal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+    <div class="modal-content bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 w-full max-w-md relative mx-4">
+      <button onclick="closeModal('inquiry-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+      <h3 class="text-2xl font-bold mb-6 text-slate-900 dark:text-white text-center">문의하기</h3>
+      <form onsubmit="handleInquiry(event)">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">제목</label>
+          <input type="text" required placeholder="문의 제목을 입력하세요" class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white outline-none transition">
+        </div>
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">내용</label>
+          <textarea required rows="4" placeholder="문의 내용을 입력하세요" class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white outline-none transition resize-none"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold shadow-md transition transform active:scale-95">보내기</button>
+      </form>
+    </div>
+  </div>
+
   <script>
     lucide.createIcons();
+
+    let isLoggedIn = false;
+    let currentUserId = "";
+    let pendingPurchase = false; // 구매 대기 상태 플래그
 
     // 탭 전환 기능
     function switchTab(tabName) {
@@ -409,33 +478,106 @@
 
     function closeModal(id) {
       document.getElementById(id).classList.remove('show');
+      // 드롭다운이 열려있다면 닫기 (옵션)
+      const dropdown = document.getElementById('user-dropdown');
+      if(dropdown) dropdown.classList.remove('show');
+    }
+
+    // 구매 버튼 클릭 처리
+    function handleBuyClick() {
+      if (isLoggedIn) {
+        openModal('payment-modal');
+      } else {
+        pendingPurchase = true; // 구매 의도 저장
+        alert("로그인이 필요한 서비스입니다.");
+        openModal('login-modal');
+      }
     }
 
     // 로그인 처리
     function handleLogin(e) {
       e.preventDefault();
       const id = document.getElementById('login-id').value;
+      currentUserId = id;
+      isLoggedIn = true;
+      
       const authArea = document.getElementById('auth-area');
       
-      // 모달 닫기
       closeModal('login-modal');
       
-      // 로그인 상태 변경 (화려한 전환)
+      // 로그인 후 UI 변경 (드롭다운 포함)
       authArea.innerHTML = `
-        <div class="flex items-center space-x-2 animate-fade-in-up">
-          <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md">
-            ${id.charAt(0).toUpperCase()}
-          </div>
-          <span class="font-bold text-slate-800 dark:text-white"><span class="text-blue-600 dark:text-blue-400">${id}</span>님</span>
+        <div class="relative">
+            <button onclick="toggleDropdown()" class="flex items-center space-x-2 animate-fade-in-up focus:outline-none">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md">
+                    ${id.charAt(0).toUpperCase()}
+                </div>
+                <span class="font-bold text-slate-800 dark:text-white"><span class="text-blue-600 dark:text-blue-400">${id}</span>님</span>
+            </button>
+            
+            <div id="user-dropdown" class="dropdown-menu bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-100 dark:border-slate-700 w-40 mt-2 overflow-hidden">
+                <a href="#" onclick="openModal('inquiry-modal'); toggleDropdown(); return false;" class="block px-4 py-3 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+                    문의하기
+                </a>
+                <a href="#" onclick="handleLogout(); return false;" class="block px-4 py-3 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-slate-700 transition">
+                    로그아웃
+                </a>
+            </div>
         </div>
       `;
+
+      // 구매 대기 중이었다면 즉시 결제 모달 열기
+      if (pendingPurchase) {
+        pendingPurchase = false; // 플래그 초기화
+        setTimeout(() => {
+            openModal('payment-modal');
+        }, 300); // 자연스러운 전환을 위해 약간의 딜레이
+      }
+    }
+
+    // 드롭다운 토글
+    function toggleDropdown() {
+        const dropdown = document.getElementById('user-dropdown');
+        if (dropdown) {
+            dropdown.classList.toggle('show');
+        }
+    }
+
+    // 로그아웃 처리
+    function handleLogout() {
+        isLoggedIn = false;
+        currentUserId = "";
+        const authArea = document.getElementById('auth-area');
+        
+        // 로그인 버튼으로 원복
+        authArea.innerHTML = `
+          <button onclick="openModal('login-modal')" 
+            class="px-4 py-2 bg-slate-800 dark:bg-slate-700 text-white text-sm rounded-lg hover:bg-slate-700 dark:hover:bg-slate-600 transition shadow-md hover:shadow-lg">
+            로그인
+          </button>
+        `;
+    }
+
+    // 문의 처리
+    function handleInquiry(e) {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        const originalText = btn.innerHTML;
+        
+        btn.innerHTML = '전송중...';
+        
+        setTimeout(() => {
+            closeModal('inquiry-modal');
+            alert('문의가 등록되었습니다. 담당자가 확인 후 연락드리겠습니다.');
+            btn.innerHTML = originalText;
+            e.target.reset();
+        }, 1000);
     }
 
     // 결제 처리
     function handlePayment(e) {
       e.preventDefault();
       
-      // 로딩 효과 흉내
       const btn = e.target.querySelector('button');
       const originalText = btn.innerHTML;
       btn.innerHTML = '<i class="animate-spin mr-2" data-lucide="loader-2"></i> 처리중...';
@@ -445,8 +587,18 @@
         closeModal('payment-modal');
         alert('결제가 완료되었습니다!');
         btn.innerHTML = originalText;
-        e.target.reset(); // 폼 초기화
+        e.target.reset(); 
       }, 1500);
+    }
+
+    // 화면 클릭 시 드롭다운 닫기 (외부 클릭 감지)
+    window.onclick = function(event) {
+        if (!event.target.closest('#auth-area')) {
+            const dropdown = document.getElementById('user-dropdown');
+            if (dropdown && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            }
+        }
     }
 
     // 초기 실행
