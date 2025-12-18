@@ -1,180 +1,175 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>플레밍의 발톱 때 - 쓱싹이</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        /* 탭 전환 애니메이션 */
-        .tab-content { display: none; animation: fadeIn 0.5s; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>플레밍의 발톱 때 - 쓱싹이</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- 애니메이션용 -->
+  <style>
+    /* ===== 공통 애니메이션 ===== */
+    .tab-content { display:none; }
+    .tab-content.active {
+      display:block;
+      animation: pageIn 0.8s cubic-bezier(.22,1,.36,1);
+    }
+
+    @keyframes pageIn {
+      from { opacity:0; transform: translateY(30px) scale(0.98); }
+      to   { opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    /* RC카 느낌: 살짝 튀는 모션 */
+    .rc-hover {
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .rc-hover:hover {
+      transform: translateY(-6px) rotate(-0.5deg);
+      box-shadow: 0 20px 40px rgba(0,0,0,.15);
+    }
+
+    /* 좌우 슬라이드 */
+    .slide-in-left { animation: slideLeft .9s ease; }
+    .slide-in-right { animation: slideRight .9s ease; }
+
+    @keyframes slideLeft {
+      from { opacity:0; transform: translateX(-60px); }
+      to { opacity:1; transform: translateX(0); }
+    }
+    @keyframes slideRight {
+      from { opacity:0; transform: translateX(60px); }
+      to { opacity:1; transform: translateX(0); }
+    }
+
+    /* 버튼 클릭 리플 느낌 */
+    .press:active { transform: scale(0.97); }
+  </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex flex-col">
 
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
-            <div class="flex items-center cursor-pointer" onclick="switchTab('company')">
-                <i data-lucide="sparkles" class="text-blue-600 mr-2"></i>
-                <span class="font-bold text-xl tracking-tight text-slate-900">플레밍의 발톱 때</span>
-            </div>
-            <nav class="hidden md:flex space-x-2">
-                <button onclick="switchTab('company')" id="btn-company" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-blue-600 bg-blue-50 transition">회사 소개</button>
-                <button onclick="switchTab('product')" id="btn-product" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-500 hover:bg-slate-100 transition">쓱싹이 소개</button>
-                <button onclick="switchTab('advantages')" id="btn-advantages" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-500 hover:bg-slate-100 transition">쓱싹이 장점</button>
-                <button onclick="switchTab('mechanism')" id="btn-mechanism" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-500 hover:bg-slate-100 transition">작동 원리</button>
-            </nav>
-        </div>
-    </header>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 min-h-screen flex flex-col">
 
-    <main class="flex-grow max-w-6xl mx-auto px-4 py-10 w-full">
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden min-h-[600px]">
-            
-            <div id="company" class="tab-content active p-8 md:p-12">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-slate-900 mb-4">We act like Fleming's Serendipity</h2>
-                    <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                        "플레밍의 발톱 때"는 사소한 발견에서 위대한 혁신을 만들어냅니다.<br>
-                        우리는 일상의 불편함을 기술과 유머로 해결하는 스타트업입니다.
-                    </p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-                    <div class="flex items-center p-4 border border-blue-200 bg-blue-50 rounded-lg">
-                        <div class="h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg mr-4 bg-blue-200 text-blue-800">배</div>
-                        <div><h3 class="font-bold text-lg">배석우</h3><p class="text-sm text-slate-500">CEO / 사장</p></div>
-                    </div>
-                    <div class="flex items-center p-4 border border-slate-200 rounded-lg hover:shadow-md transition">
-                        <div class="h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg mr-4 bg-slate-200 text-slate-800">장</div>
-                        <div><h3 class="font-bold text-lg">장한별</h3><p class="text-sm text-slate-500">코드, 웹, 앱 개발 담당</p></div>
-                    </div>
-                    <div class="flex items-center p-4 border border-slate-200 rounded-lg hover:shadow-md transition">
-                        <div class="h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg mr-4 bg-slate-200 text-slate-800">박</div>
-                        <div><h3 class="font-bold text-lg">박조한</h3><p class="text-sm text-slate-500">발표 담당</p></div>
-                    </div>
-                    <div class="flex items-center p-4 border border-slate-200 rounded-lg hover:shadow-md transition">
-                        <div class="h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg mr-4 bg-slate-200 text-slate-800">강</div>
-                        <div><h3 class="font-bold text-lg">강우진</h3><p class="text-sm text-slate-500">시뮬레이션 담당</p></div>
-                    </div>
-                    <div class="flex items-center p-4 border border-slate-200 rounded-lg hover:shadow-md transition">
-                        <div class="h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg mr-4 bg-slate-200 text-slate-800">김</div>
-                        <div><h3 class="font-bold text-lg">김주원</h3><p class="text-sm text-slate-500">디자인 담당</p></div>
-                    </div>
-                </div>
-            </div>
+<!-- ================= HEADER ================= -->
+<header class="sticky top-0 z-50 backdrop-blur bg-slate-900/70 border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+    <div onclick="switchTab('company')" class="flex items-center cursor-pointer">
+      <i data-lucide="rocket" class="text-blue-400 mr-2"></i>
+      <span class="font-extrabold tracking-tight text-lg">쓱싹이</span>
+    </div>
+    <nav class="hidden md:flex space-x-1">
+      <button id="btn-company" onclick="switchTab('company')" class="nav-btn px-3 py-2 rounded-md bg-blue-600 text-white">회사</button>
+      <button id="btn-product" onclick="switchTab('product')" class="nav-btn px-3 py-2 rounded-md">제품</button>
+      <button id="btn-advantages" onclick="switchTab('advantages')" class="nav-btn px-3 py-2 rounded-md">장점</button>
+      <button id="btn-mechanism" onclick="switchTab('mechanism')" class="nav-btn px-3 py-2 rounded-md">기술</button>
+      <button id="btn-qna" onclick="switchTab('qna')" class="nav-btn px-3 py-2 rounded-md">Q&A</button>
+      <button id="btn-login" onclick="switchTab('login')" class="nav-btn px-3 py-2 rounded-md">로그인</button>
+      <button id="btn-pay" onclick="switchTab('pay')" class="nav-btn px-3 py-2 rounded-md">결제</button>
+    </nav>
+  </div>
+</header>
 
-            <div id="product" class="tab-content p-8 md:p-16 h-full">
-                <div class="flex flex-col md:flex-row items-center h-full">
-                    <div class="md:w-1/2 pr-0 md:pr-10 mb-8 md:mb-0">
-                        <span class="inline-block py-1 px-3 rounded-full bg-green-100 text-green-700 text-sm font-semibold mb-4">NEW ARRIVAL</span>
-                        <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
-                            조종할 수 있는<br>스마트 쓰레기통 <br> <span class="text-blue-600">쓱싹이</span>
-                        </h1>
-                        <p class="text-lg text-slate-600 mb-8">
-                            더 이상 쓰레기통으로 직접 걸어가지 마세요.<br>
-                            스마트폰으로 쓰레기통을 내 앞까지 조종하고,<br>
-                            손을 대지 않아도 문이 열리는 마법을 경험하세요.
-                        </p>
-                    </div>
-                    <div class="md:w-1/2 bg-slate-100 rounded-xl h-80 flex items-center justify-center relative overflow-hidden shadow-inner">
-                        <img src="https://i2.ruliweb.com/img/25/05/29/197176973d7e5da6.jpg" alt="쓱싹이 제품 이미지" class="object-contain h-full">
-                    </div>
-                </div>
-            </div>
+<!-- ================= MAIN ================= -->
+<main class="flex-grow max-w-7xl mx-auto px-4 py-10 w-full">
 
-            <div id="advantages" class="tab-content p-8 md:p-12">
-                <h2 class="text-3xl font-bold text-center mb-12">왜 '쓱싹이'여야 할까요?</h2>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-slate-50 p-6 rounded-xl text-center hover:bg-white hover:shadow-lg transition border border-slate-100">
-                        <div class="flex justify-center mb-4 bg-white w-20 h-20 mx-auto items-center rounded-full shadow-sm">
-                            <i data-lucide="zap" class="w-10 h-10 text-yellow-500"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 text-slate-800">호출 기능</h3>
-                        <p class="text-slate-600">앱을 사용하여 사용자가 <br> 원하는 곳으로 이동합니다.</p>
-                    </div>
-                    <div class="bg-slate-50 p-6 rounded-xl text-center hover:bg-white hover:shadow-lg transition border border-slate-100">
-                        <div class="flex justify-center mb-4 bg-white w-20 h-20 mx-auto items-center rounded-full shadow-sm">
-                            <i data-lucide="sparkles" class="w-10 h-10 text-blue-500"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 text-slate-800">자동 개폐</h3>
-                        <p class="text-slate-600">초음파 센서가 손을 감지하여 <br> 자동으로 뚜껑을 엽니다. <br> 위생적이고 편리합니다.</p>
-                    </div>
-                    <div class="bg-slate-50 p-6 rounded-xl text-center hover:bg-white hover:shadow-lg transition border border-slate-100">
-                        <div class="flex justify-center mb-4 bg-white w-20 h-20 mx-auto items-center rounded-full shadow-sm">
-                            <i data-lucide="users" class="w-10 h-10 text-green-500"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 text-slate-800">재밌는 청소</h3>
-                        <p class="text-slate-600">RC카처럼 조종 가능한 쓰레기통. <br> 청소가 더 이상 귀찮지 않습니다.</p>
-                    </div>
-                </div>
-            </div>
+<!-- 회사 소개 -->
+<section id="company" class="tab-content active">
+  <div class="text-center mb-16 slide-in-left">
+    <h1 class="text-4xl md:text-5xl font-black mb-6">우리는 <span class="text-blue-400">RC처럼 움직이는 혁신</span>을 만듭니다</h1>
+    <p class="text-slate-300 max-w-2xl mx-auto">사소한 아이디어를 장난감처럼, 하지만 진지하게.</p>
+  </div>
+</section>
 
-            <div id="mechanism" class="tab-content p-8 md:p-12">
-                <h2 class="text-3xl font-bold text-center mb-12">작동 원리 (Technology)</h2>
-                
-                <div class="space-y-8 max-w-3xl mx-auto">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 bg-blue-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg mr-6">01</div>
-                        <div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2 flex items-center">애플리케이션으로 명령</h3>
-                            <p class="text-slate-600 bg-slate-50 p-4 rounded-lg border border-slate-200"> 애플리케이션에서 방향키를 누릅니다.</p>
-                        </div>
-                    </div>
-                    <div class="h-8 border-l-2 border-dashed border-slate-300 ml-8"></div>
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 bg-blue-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg mr-6">02</div>
-                        <div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2 flex items-center">모터 드라이빙</h3>
-                            <p class="text-slate-600 bg-slate-50 p-4 rounded-lg border border-slate-200">아두이노 기반의 DC 모터가 작동하여 인식된 방향으로 바퀴를 제어해 이동합니다.</p>
-                        </div>
-                    </div>
-                    <div class="h-8 border-l-2 border-dashed border-slate-300 ml-8"></div>
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 bg-blue-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg mr-6">03</div>
-                        <div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2 flex items-center">근접 감지</h3>
-                            <p class="text-slate-600 bg-slate-50 p-4 rounded-lg border border-slate-200">초음파 센서가 15cm 이내의 물체(손)를 감지하면 서보 모터를 제어하여 뚜껑을 엽니다.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- 제품 -->
+<section id="product" class="tab-content">
+  <div class="grid md:grid-cols-2 gap-10 items-center">
+    <div class="slide-in-left">
+      <h2 class="text-5xl font-extrabold mb-6">RC카 쓰레기통<br><span class="text-blue-400">쓱싹이</span></h2>
+      <p class="text-slate-300 mb-8">앱으로 조종하고, 손만 대면 열리는 미래형 쓰레기통</p>
+      <button class="press px-6 py-3 bg-blue-600 rounded-xl font-bold">지금 체험하기</button>
+    </div>
+    <div class="rc-hover slide-in-right bg-slate-800 rounded-2xl p-6 flex justify-center">
+      <img src="https://i2.ruliweb.com/img/25/05/29/197176973d7e5da6.jpg" class="h-72 object-contain" />
+    </div>
+  </div>
+</section>
 
-        </div>
-    </main>
+<!-- 장점 -->
+<section id="advantages" class="tab-content">
+  <div class="grid md:grid-cols-3 gap-8">
+    <div class="rc-hover bg-slate-800 p-6 rounded-xl text-center">
+      <i data-lucide="gamepad-2" class="mx-auto mb-4 text-blue-400"></i>
+      <h3 class="font-bold text-xl">RC 조종</h3>
+      <p class="text-slate-400">장난감처럼 즐기는 청소</p>
+    </div>
+    <div class="rc-hover bg-slate-800 p-6 rounded-xl text-center">
+      <i data-lucide="hand" class="mx-auto mb-4 text-green-400"></i>
+      <h3 class="font-bold text-xl">비접촉</h3>
+      <p class="text-slate-400">손 안 대도 자동 개폐</p>
+    </div>
+    <div class="rc-hover bg-slate-800 p-6 rounded-xl text-center">
+      <i data-lucide="sparkles" class="mx-auto mb-4 text-yellow-400"></i>
+      <h3 class="font-bold text-xl">재미</h3>
+      <p class="text-slate-400">귀찮음이 놀이가 된다</p>
+    </div>
+  </div>
+</section>
 
-    <footer class="bg-slate-900 text-slate-400 py-8 text-center mt-auto">
-        <p>© 2025 플레밍의 발톱 때. All rights reserved.</p>
-        <p class="text-sm mt-2">혁신적인 위생의 시작, 쓱싹이와 함께하세요.</p>
-    </footer>
+<!-- 기술 -->
+<section id="mechanism" class="tab-content">
+  <ol class="space-y-8 max-w-3xl mx-auto">
+    <li class="slide-in-left">📱 앱 → 명령 전송</li>
+    <li class="slide-in-right">⚙️ DC 모터 구동</li>
+    <li class="slide-in-left">📡 초음파 센서 → 자동 개폐</li>
+  </ol>
+</section>
 
-    <script>
-        // 루사이드 아이콘 초기화
-        lucide.createIcons();
+<!-- Q&A -->
+<section id="qna" class="tab-content max-w-3xl mx-auto">
+  <h2 class="text-3xl font-bold mb-6">Q & A</h2>
+  <details class="bg-slate-800 p-4 rounded mb-3">
+    <summary class="cursor-pointer">실제 구매 가능한가요?</summary>
+    <p class="mt-2 text-slate-300">현재는 시연용 프로토타입입니다.</p>
+  </details>
+  <details class="bg-slate-800 p-4 rounded">
+    <summary class="cursor-pointer">아두이노인가요?</summary>
+    <p class="mt-2 text-slate-300">네, 아두이노 기반입니다.</p>
+  </details>
+</section>
 
-        function switchTab(tabName) {
-            // 1. 모든 탭 내용 숨기기
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
+<!-- 로그인 -->
+<section id="login" class="tab-content max-w-md mx-auto">
+  <h2 class="text-3xl font-bold mb-6">로그인</h2>
+  <input placeholder="아이디" class="w-full mb-3 p-3 rounded bg-slate-800" />
+  <input type="password" placeholder="비밀번호" class="w-full mb-4 p-3 rounded bg-slate-800" />
+  <button onclick="alert('로그인 성공 (모의)')" class="press w-full bg-blue-600 py-3 rounded-xl">로그인</button>
+</section>
 
-            // 2. 선택한 탭 내용 보여주기
-            document.getElementById(tabName).classList.add('active');
+<!-- 결제 -->
+<section id="pay" class="tab-content max-w-md mx-auto">
+  <h2 class="text-3xl font-bold mb-6">결제 (모의)</h2>
+  <input placeholder="이름" class="w-full mb-3 p-3 rounded bg-slate-800" />
+  <input placeholder="주소" class="w-full mb-3 p-3 rounded bg-slate-800" />
+  <input placeholder="카드 번호 (가상)" class="w-full mb-4 p-3 rounded bg-slate-800" />
+  <button onclick="alert('결제가 완료되었습니다!')" class="press w-full bg-green-600 py-3 rounded-xl">결제하기</button>
+</section>
 
-            // 3. 버튼 스타일 초기화
-            const buttons = document.querySelectorAll('.nav-btn');
-            buttons.forEach(btn => {
-                btn.classList.remove('text-blue-600', 'bg-blue-50');
-                btn.classList.add('text-slate-500');
-            });
+</main>
 
-            // 4. 선택한 버튼 활성화 스타일 적용
-            const activeBtn = document.getElementById('btn-' + tabName);
-            if(activeBtn) {
-                activeBtn.classList.remove('text-slate-500');
-                activeBtn.classList.add('text-blue-600', 'bg-blue-50');
-            }
-        }
-    </script>
+<footer class="text-center text-slate-500 py-6 text-sm">© 2025 플레밍의 발톱 때</footer>
+
+<script>
+  lucide.createIcons();
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('bg-blue-600','text-white'));
+    const btn = document.getElementById('btn-' + tab);
+    if(btn) btn.classList.add('bg-blue-600','text-white');
+  }
+</script>
+
 </body>
 </html>
