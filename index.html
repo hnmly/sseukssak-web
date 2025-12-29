@@ -33,7 +33,6 @@
     .modal.show { opacity: 1; visibility: visible; }
     .modal-content { transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .modal.show .modal-content { transform: scale(1); }
-    /* 드롭다운 메뉴 스타일 */
     .dropdown-menu { display: none; }
     .dropdown-menu.show { display: block; }
   </style>
@@ -41,471 +40,75 @@
 
 <body class="bg-slate-50 dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
-  <header class="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-40 transition-colors duration-300">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
-      <div class="flex items-center cursor-pointer group" onclick="switchTab('company')">
-        <i data-lucide="sparkles" class="text-blue-600 dark:text-blue-400 mr-2 group-hover:rotate-12 transition-transform"></i>
-        <span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">에코빈</span>
-      </div>
-
-      <nav class="hidden md:flex items-center space-x-2">
-        <button onclick="switchTab('company')" id="btn-company" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition duration-200">회사 소개</button>
-        <button onclick="switchTab('product')" id="btn-product" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition duration-200">쓱싹이 소개</button>
-        <button onclick="switchTab('advantages')" id="btn-advantages" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition duration-200">쓱싹이</button>
-        <button onclick="switchTab('mechanism')" id="btn-mechanism" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition duration-200">작동 과정</button>
-        <button onclick="switchTab('qna')" id="btn-qna" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition duration-200">Q&A</button>
-
-        <div class="h-6 w-px bg-slate-300 dark:bg-slate-600 mx-2"></div>
-
-        <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition">
-          <i id="theme-icon" data-lucide="moon" class="w-5 h-5 text-slate-600 dark:text-yellow-400"></i>
-        </button>
-
-        <div id="auth-area" class="ml-2 relative">
-          <button onclick="openModal('login-modal')" 
-            class="px-4 py-2 bg-slate-800 dark:bg-slate-700 text-white text-sm rounded-lg hover:bg-slate-700 dark:hover:bg-slate-600 transition shadow-md hover:shadow-lg">
-            로그인
-          </button>
-        </div>
-      </nav>
+<header class="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-40">
+  <div class="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
+    <div class="flex items-center cursor-pointer" onclick="switchTab('company')">
+      <i data-lucide="sparkles" class="text-blue-600 mr-2"></i>
+      <span class="font-bold text-xl">에코빈</span>
     </div>
-  </header>
+  </div>
+</header>
 
-  <main class="flex-grow max-w-6xl mx-auto px-4 py-10 w-full">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden min-h-[600px] transition-colors duration-300 border border-slate-100 dark:border-slate-700">
+<main class="flex-grow max-w-6xl mx-auto px-4 py-10 w-full">
+<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden min-h-[600px]">
 
-      <div id="company" class="tab-content active p-8 md:p-12">
-        <div class="text-center mb-8 animate-fade-in-up">
-          <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Pure Space, Zero Effort</h2>
-          <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-            "에코빈"는 사소한 발견에서 위대한 혁신을 만들어냅니다.<br />
-            우리는 일상의 불편함을 기술과 유머로 해결하는 스타트업입니다.
-          </p>
-        </div>
-        <div class="w-full h-64 bg-slate-100 dark:bg-slate-700 rounded-xl mb-8 flex items-center justify-center overflow-hidden shadow-inner relative group">
-            <img src="https://pbs.twimg.com/media/GJKp6ntbcAASS0z.jpg" />
-            <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-              <span class="text-white font-bold text-2xl drop-shadow-md"></span>
-            </div>
-        </div>
-        <div class="text-center mb-10">
-          <button onclick="toggleEmployees()" id="btn-toggle-emp"
-            class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold shadow-lg hover:shadow-blue-500/50 transition-all transform hover:-translate-y-1 flex items-center justify-center mx-auto">
-            <span>직원 보기</span>
-            <i data-lucide="chevron-down" class="ml-2 w-5 h-5 transition-transform duration-300" id="icon-toggle-emp"></i>
-          </button>
-        </div>
-        <div id="employee-list" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500 ease-in-out">
-            <div class="flex items-center p-4 border border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-800 rounded-lg transform hover:scale-105 transition duration-300">
-                <div class="h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg mr-4 bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-100 shadow-sm">배</div>
-                <div><h3 class="font-bold text-lg dark:text-white">배석우</h3><p class="text-sm text-slate-500 dark:text-slate-400">CEO / 사장</p></div>
-              </div>
-              <div class="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:shadow-md dark:hover:bg-slate-700 transition transform hover:scale-105 duration-300">
-                <div class="h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg mr-4 bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-white">장</div>
-                <div><h3 class="font-bold text-lg dark:text-white">장한별</h3><p class="text-sm text-slate-500 dark:text-slate-400">코드, 웹, 앱 개발 담당</p></div>
-              </div>
-              <div class="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:shadow-md dark:hover:bg-slate-700 transition transform hover:scale-105 duration-300">
-                <div class="h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg mr-4 bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-white">박</div>
-                <div><h3 class="font-bold text-lg dark:text-white">박조한</h3><p class="text-sm text-slate-500 dark:text-slate-400">발표 담당</p></div>
-              </div>
-              <div class="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:shadow-md dark:hover:bg-slate-700 transition transform hover:scale-105 duration-300">
-                <div class="h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg mr-4 bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-white">강</div>
-                <div><h3 class="font-bold text-lg dark:text-white">강우진</h3><p class="text-sm text-slate-500 dark:text-slate-400">시뮬레이션 담당</p></div>
-              </div>
-              <div class="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:shadow-md dark:hover:bg-slate-700 transition transform hover:scale-105 duration-300">
-                <div class="h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg mr-4 bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-white">김</div>
-                <div><h3 class="font-bold text-lg dark:text-white">김주원</h3><p class="text-sm text-slate-500 dark:text-slate-400">디자인 담당</p></div>
-              </div>
-        </div>
-      </div>
-
-      <div id="product" class="tab-content p-8 md:p-16 h-full">
-        <div class="flex flex-col md:flex-row items-center h-full">
-          <div class="md:w-1/2 pr-0 md:pr-10 mb-8 md:mb-0 animate-fade-in-up">
-            <span class="inline-block py-1 px-3 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-sm font-semibold mb-4 animate-pulse">NEW ARRIVAL</span>
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6 leading-tight">
-              조종할 수 있는<br />스마트 쓰레기통<br />
-              <span class="text-blue-600 dark:text-blue-400">쓱싹이</span>
-            </h1>
-            <p class="text-lg text-slate-600 dark:text-slate-300 mb-8">
-              더 이상 쓰레기통으로 직접 걸어가지 마세요.<br />
-              스마트폰으로 쓰레기통을 내 앞까지 조종하고,<br />
-              손을 대지 않아도 문이 열리는 마법을 경험하세요.
-            </p>
-            
-            <button onclick="startPaymentFlow()" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-blue-500/30 transform transition hover:scale-105 hover:-translate-y-1 flex items-center">
-              지금 만나러 가기
-              <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
-            </button>
-          </div>
-          <div class="md:w-1/2 bg-slate-100 dark:bg-slate-700 rounded-xl h-80 flex items-center justify-center relative overflow-hidden shadow-inner group">
-             <div class="absolute inset-0 bg-blue-500 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
-             <img src="https://i2.ruliweb.com/img/25/05/29/197176973d7e5da6.jpg" alt="쓱싹이 제품 이미지" class="object-contain h-full z-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-3" />
-          </div>
-        </div>
-      </div>
-
-      <div id="advantages" class="tab-content p-8 md:p-12">
-        <h2 class="text-3xl font-bold text-center mb-12 dark:text-white">왜 '쓱싹이'여야 할까요?</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-xl text-center hover:bg-white dark:hover:bg-slate-600 hover:shadow-xl transition border border-slate-100 dark:border-slate-600 group">
-                <div class="flex justify-center mb-4 bg-white dark:bg-slate-800 w-20 h-20 mx-auto items-center rounded-full shadow-sm group-hover:scale-110 transition-transform">
-                  <i data-lucide="zap" class="w-10 h-10 text-yellow-500"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-3 text-slate-800 dark:text-white">호출 기능</h3>
-                <p class="text-slate-600 dark:text-slate-300">앱을 사용하여 사용자가 <br />원하는 곳으로 이동합니다.</p>
-            </div>
-            <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-xl text-center hover:bg-white dark:hover:bg-slate-600 hover:shadow-xl transition border border-slate-100 dark:border-slate-600 group">
-                <div class="flex justify-center mb-4 bg-white dark:bg-slate-800 w-20 h-20 mx-auto items-center rounded-full shadow-sm group-hover:scale-110 transition-transform">
-                  <i data-lucide="sparkles" class="w-10 h-10 text-blue-500"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-3 text-slate-800 dark:text-white">자동 개폐</h3>
-                <p class="text-slate-600 dark:text-slate-300">초음파 센서가 손을 감지하여 <br />자동으로 뚜껑을 엽니다. <br />위생적이고 편리합니다.</p>
-            </div>
-            <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-xl text-center hover:bg-white dark:hover:bg-slate-600 hover:shadow-xl transition border border-slate-100 dark:border-slate-600 group">
-                <div class="flex justify-center mb-4 bg-white dark:bg-slate-800 w-20 h-20 mx-auto items-center rounded-full shadow-sm group-hover:scale-110 transition-transform">
-                  <i data-lucide="users" class="w-10 h-10 text-green-500"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-3 text-slate-800 dark:text-white">재밌는 청소</h3>
-                <p class="text-slate-600 dark:text-slate-300">RC카처럼 조종 가능한 쓰레기통. <br />청소가 더 이상 귀찮지 않습니다.</p>
-            </div>
-        </div>
-      </div>
-
-      <div id="mechanism" class="tab-content p-8 md:p-12">
-        <h2 class="text-3xl font-bold text-center mb-12 dark:text-white">작동 과정 (Technology)</h2>
-        <div class="space-y-8 max-w-3xl mx-auto">
-            <div class="flex items-start group">
-                <div class="flex-shrink-0 bg-blue-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg mr-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-blue-500 to-blue-700">01</div>
-                <div>
-                  <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">애플리케이션으로 명령</h3>
-                  <p class="text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-700 p-4 rounded-lg border border-slate-200 dark:border-slate-600">애플리케이션에서 방향키를 누릅니다.</p>
-                </div>
-            </div>
-            <div class="h-8 border-l-2 border-dashed border-slate-300 dark:border-slate-600 ml-8"></div>
-            <div class="flex items-start group">
-                <div class="flex-shrink-0 bg-blue-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg mr-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-blue-500 to-blue-700">02</div>
-                <div>
-                  <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">모터 드라이빙</h3>
-                  <p class="text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-700 p-4 rounded-lg border border-slate-200 dark:border-slate-600">아두이노 기반의 DC 모터가 작동하여 인식된 방향으로 바퀴를 제어해 이동합니다.</p>
-                </div>
-            </div>
-            <div class="h-8 border-l-2 border-dashed border-slate-300 dark:border-slate-600 ml-8"></div>
-            <div class="flex items-start group">
-                <div class="flex-shrink-0 bg-blue-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg mr-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-blue-500 to-blue-700">03</div>
-                <div>
-                  <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">근접 감지</h3>
-                  <p class="text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-700 p-4 rounded-lg border border-slate-200 dark:border-slate-600">초음파 센서가 15cm 이내의 물체(손)를 감지하면 서보 모터를 제어하여 뚜껑을 엽니다.</p>
-                </div>
-            </div>
-        </div>
-      </div>
-      <div id="qna" class="tab-content p-8 md:p-12">
-        <h2 class="text-3xl font-bold text-center mb-12 dark:text-white">자주 묻는 질문 (Q&A)</h2>
-<div class="max-w-3xl mx-auto space-y-2">
-
-  <div class="bg-slate-50 dark:bg-slate-700 rounded-lg px-6 py-4 border border-slate-200 dark:border-slate-600">
-    <p class="leading-normal">
-      <span class="font-bold text-lg text-slate-900 dark:text-white">
-        Q. 앱은 갤럭시와 아이폰 둘 다 사용 가능한가요?
-      </span>
-      <br><br>
-      <span class="text-slate-600 dark:text-slate-300">
-        A. 아직은 갤럭시에서만 사용 가능합니다.
-      </span>
+<!-- 회사 소개 -->
+<div id="company" class="tab-content active p-8 md:p-12">
+  <div class="text-center mb-8">
+    <h2 class="text-3xl font-bold mb-4">Pure Space, Zero Effort</h2>
+    <p class="text-lg text-slate-600 dark:text-slate-300">
+      "에코빈"는 사소한 발견에서 위대한 혁신을 만들어냅니다.
     </p>
   </div>
 
-  <div class="bg-slate-50 dark:bg-slate-700 rounded-lg px-6 py-4 border border-slate-200 dark:border-slate-600">
-    <p class="leading-normal">
-      <span class="font-bold text-lg text-slate-900 dark:text-white">
-        Q. 쓰레기통이 조종중에 쓰러지지는 않나요?
-      </span>
-      <br><br>
-      <span class="text-slate-600 dark:text-slate-300">
-        A. 중심을 잡아주는 앞 바퀴가 있어 안전합니다.
-      </span>
-    </p>
-  </div>
-
-  <div class="bg-slate-50 dark:bg-slate-700 rounded-lg px-6 py-4 border border-slate-200 dark:border-slate-600">
-    <p class="leading-normal">
-      <span class="font-bold text-lg text-slate-900 dark:text-white">
-        Q. 추후 계획은 어떻게 되나요?
-      </span>
-      <br><br>
-      <span class="text-slate-600 dark:text-slate-300">
-        A. 추후에는 소리 감지센서를 이용해 사용자가 있는 곳으로<br>
-        자율주행하는 쓰레기통을 만들 계획입니다.
-      </span>
-    </p>
-  </div>
-
-</div>
-
-    </p>
+  <!-- 🔴 회사소개 이미지 (변경됨) -->
+  <div class="w-full h-64 bg-slate-100 dark:bg-slate-700 rounded-xl mb-8 flex items-center justify-center overflow-hidden shadow-inner">
+    <img
+      src="https://github.com/hnmly/sseukssak-web/blob/main/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-12-29%20204908.png?raw=true"
+      alt="회사 소개 이미지"
+      class="object-cover w-full h-full"
+    />
   </div>
 </div>
 
-          </div>
-        </div>
-      </div>
+<!-- 제품 소개 -->
+<div id="product" class="tab-content p-8 md:p-16">
+  <div class="flex flex-col md:flex-row items-center">
+    <div class="md:w-1/2 mb-8">
+      <h1 class="text-4xl font-extrabold mb-6">
+        조종할 수 있는 스마트 쓰레기통<br />
+        <span class="text-blue-600">쓱싹이</span>
+      </h1>
+      <p class="text-lg text-slate-600 dark:text-slate-300 mb-8">
+        스마트폰으로 쓰레기통을 내 앞으로!
+      </p>
     </div>
-  </main>
 
-  <footer class="bg-slate-900 dark:bg-black text-slate-400 py-8 text-center mt-auto transition-colors duration-300">
-    <p>© 2025 에코빈. All rights reserved.</p>
-    <p class="text-sm mt-2">혁신적인 위생의 시작, 쓱싹이와 함께하세요.</p>
-  </footer>
-
-  <div id="login-modal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-    <div class="modal-content bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 w-full max-w-sm relative mx-4">
-      <button onclick="closeModal('login-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-        <i data-lucide="x" class="w-6 h-6"></i>
-      </button>
-      <h3 class="text-2xl font-bold mb-6 text-slate-900 dark:text-white text-center">로그인</h3>
-      <form onsubmit="handleLogin(event)">
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">아이디</label>
-          <input type="text" id="login-id" required placeholder="아이디를 입력하세요" class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white outline-none transition">
-        </div>
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">비밀번호</label>
-          <input type="password" placeholder="비밀번호를 입력하세요" class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white outline-none transition">
-        </div>
-        <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold shadow-md transition transform active:scale-95">로그인</button>
-      </form>
+    <!-- 🔴 쓱싹이 이미지 (변경됨) -->
+    <div class="md:w-1/2 bg-slate-100 dark:bg-slate-700 rounded-xl h-80 flex items-center justify-center overflow-hidden">
+      <img
+        src="https://github.com/hnmly/sseukssak-web/blob/main/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-12-29%20205024.png?raw=true"
+        alt="쓱싹이 제품 이미지"
+        class="object-contain h-full transition-transform duration-700 hover:scale-110"
+      />
     </div>
   </div>
+</div>
 
-  <div id="payment-modal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-    <div class="modal-content bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 w-full max-w-md relative mx-4 max-h-[90vh] overflow-y-auto">
-      <button onclick="closeModal('payment-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-        <i data-lucide="x" class="w-6 h-6"></i>
-      </button>
-      <div class="text-center mb-6">
-        <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
-          <i data-lucide="credit-card" class="w-8 h-8 text-blue-600 dark:text-blue-300"></i>
-        </div>
-        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">쓱싹이 구매하기</h3>
-        <p class="text-slate-500 dark:text-slate-400 mt-2">배송 정보를 입력해주세요.</p>
-        <p class="text-2xl font-extrabold text-blue-600 dark:text-blue-400 mt-2">₩ 67,000</p>
-      </div>
-      <form onsubmit="handlePayment(event)" class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">이름</label>
-          <input type="text" required class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white outline-none">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">주소</label>
-          <input type="text" required class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white outline-none">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">카드 번호</label>
-          <div class="relative">
-            <i data-lucide="credit-card" class="absolute left-3 top-2.5 w-5 h-5 text-slate-400"></i>
-            <input type="text" placeholder="0000-0000-0000-0000" required class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white outline-none">
-          </div>
-        </div>
-        <button type="submit" class="w-full py-3 mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg font-bold shadow-lg transition transform active:scale-95 flex justify-center items-center">
-          <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i> 결제하기
-        </button>
-      </form>
-    </div>
-  </div>
+</div>
+</main>
 
-  <div id="inquiry-modal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-    <div class="modal-content bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 w-full max-w-lg relative mx-4">
-      <button onclick="closeModal('inquiry-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-        <i data-lucide="x" class="w-6 h-6"></i>
-      </button>
-      <h3 class="text-2xl font-bold mb-6 text-slate-900 dark:text-white text-center">문의하기</h3>
-      <form onsubmit="handleInquiry(event)">
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">제목</label>
-          <input type="text" required placeholder="문의 제목을 입력하세요" class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white outline-none transition">
-        </div>
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">내용</label>
-          <textarea rows="5" required placeholder="문의하실 내용을 입력하세요" class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white outline-none transition resize-none"></textarea>
-        </div>
-        <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold shadow-md transition transform active:scale-95">문의 보내기</button>
-      </form>
-    </div>
-  </div>
+<footer class="bg-slate-900 text-slate-400 py-8 text-center">
+  <p>© 2025 에코빈. All rights reserved.</p>
+</footer>
 
-  <script>
-    lucide.createIcons();
+<script>
+  lucide.createIcons();
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+  }
+</script>
 
-    let isLoggedIn = false;
-    let pendingPayment = false; // 로그인 후 바로 결제로 갈지 여부 체크
-
-    // 탭 전환
-    function switchTab(tabName) {
-      const contents = document.querySelectorAll('.tab-content');
-      contents.forEach(content => content.classList.remove('active'));
-      document.getElementById(tabName).classList.add('active');
-
-      const buttons = document.querySelectorAll('.nav-btn');
-      buttons.forEach(btn => {
-        btn.classList.remove('text-blue-600', 'bg-blue-50', 'dark:text-blue-400', 'dark:bg-blue-900/30');
-        btn.classList.add('text-slate-500', 'dark:text-slate-400');
-      });
-
-      const activeBtn = document.getElementById('btn-' + tabName);
-      if (activeBtn) {
-        activeBtn.classList.remove('text-slate-500', 'dark:text-slate-400');
-        activeBtn.classList.add('text-blue-600', 'bg-blue-50', 'dark:text-blue-400', 'dark:bg-blue-900/30');
-      }
-    }
-
-    // "지금 만나러 가기" 버튼 로직
-    function startPaymentFlow() {
-        if (!isLoggedIn) {
-            pendingPayment = true; // 로그인 후 결제창을 열라는 플래그
-            openModal('login-modal');
-        } else {
-            openModal('payment-modal');
-        }
-    }
-
-    // 직원 목록 토글
-    function toggleEmployees() {
-      const list = document.getElementById('employee-list');
-      const icon = document.getElementById('icon-toggle-emp');
-      const btn = document.getElementById('btn-toggle-emp');
-      
-      if (list.classList.contains('hidden')) {
-        list.classList.remove('hidden');
-        list.classList.add('grid');
-        icon.style.transform = 'rotate(180deg)';
-        btn.querySelector('span').innerText = '직원 숨기기';
-      } else {
-        list.classList.add('hidden');
-        list.classList.remove('grid');
-        icon.style.transform = 'rotate(0deg)';
-        btn.querySelector('span').innerText = '직원 보기';
-      }
-    }
-
-    // 다크모드 토글
-    function toggleDarkMode() {
-      const html = document.documentElement;
-      const icon = document.getElementById('theme-icon');
-      
-      if (html.classList.contains('dark')) {
-        html.classList.remove('dark');
-        icon.setAttribute('data-lucide', 'moon');
-        icon.classList.remove('text-yellow-400');
-        icon.classList.add('text-slate-600');
-      } else {
-        html.classList.add('dark');
-        icon.setAttribute('data-lucide', 'sun');
-        icon.classList.remove('text-slate-600');
-        icon.classList.add('text-yellow-400');
-      }
-      lucide.createIcons();
-    }
-
-    // 모달 제어
-    function openModal(id) { document.getElementById(id).classList.add('show'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-
-    // 로그인 처리
-    function handleLogin(e) {
-      e.preventDefault();
-      const id = document.getElementById('login-id').value;
-      const authArea = document.getElementById('auth-area');
-      
-      isLoggedIn = true;
-      closeModal('login-modal');
-      
-      // 로그인 상태 UI 변경 (드롭다운 포함)
-      authArea.innerHTML = `
-        <div class="relative">
-            <button onclick="toggleUserDropdown()" class="flex items-center space-x-2 animate-fade-in-up focus:outline-none">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md">
-                    ${id.charAt(0).toUpperCase()}
-                </div>
-                <span class="font-bold text-slate-800 dark:text-white"><span class="text-blue-600 dark:text-blue-400">${id}</span>님</span>
-                <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500"></i>
-            </button>
-            
-            <div id="user-dropdown" class="dropdown-menu absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden z-50">
-                <a href="#" onclick="openModal('inquiry-modal'); toggleUserDropdown(); return false;" class="block px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
-                    문의하기
-                </a>
-                <a href="#" onclick="handleLogout(); return false;" class="block px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition">
-                    로그아웃
-                </a>
-            </div>
-        </div>
-      `;
-      lucide.createIcons();
-
-      // 결제 대기 중이었다면 바로 결제창 오픈
-      if (pendingPayment) {
-          setTimeout(() => {
-            openModal('payment-modal');
-            pendingPayment = false; // 플래그 초기화
-          }, 300); // 약간의 딜레이로 자연스럽게
-      }
-    }
-
-    // 유저 드롭다운 토글
-    function toggleUserDropdown() {
-        const dropdown = document.getElementById('user-dropdown');
-        if (dropdown) dropdown.classList.toggle('show');
-    }
-
-    // 로그아웃 처리
-    function handleLogout() {
-        isLoggedIn = false;
-        const authArea = document.getElementById('auth-area');
-        authArea.innerHTML = `
-          <button onclick="openModal('login-modal')" class="px-4 py-2 bg-slate-800 dark:bg-slate-700 text-white text-sm rounded-lg hover:bg-slate-700 dark:hover:bg-slate-600 transition shadow-md hover:shadow-lg">
-            로그인
-          </button>
-        `;
-        toggleUserDropdown(); // 드롭다운 닫기 시도 (존재 시)
-    }
-
-    // 문의 제출 처리
-    function handleInquiry(e) {
-        e.preventDefault();
-        alert('문의가 접수되었습니다. 담당자가 확인 후 연락드리겠습니다.');
-        closeModal('inquiry-modal');
-        e.target.reset();
-    }
-
-    // 결제 처리
-    function handlePayment(e) {
-      e.preventDefault();
-      const btn = e.target.querySelector('button');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '<i class="animate-spin mr-2" data-lucide="loader-2"></i> 처리중...';
-      lucide.createIcons();
-      
-      setTimeout(() => {
-        closeModal('payment-modal');
-        alert('결제가 완료되었습니다!');
-        btn.innerHTML = originalText;
-        e.target.reset();
-      }, 1500);
-    }
-
-    // 초기 실행
-    switchTab('company');
-
-    // 외부 클릭 시 드롭다운 닫기 (편의성)
-    window.onclick = function(event) {
-        if (!event.target.closest('#auth-area')) {
-            const dropdown = document.getElementById('user-dropdown');
-            if (dropdown && dropdown.classList.contains('show')) {
-                dropdown.classList.remove('show');
-            }
-        }
-    }
-  </script>
 </body>
 </html>
